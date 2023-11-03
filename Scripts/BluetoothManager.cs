@@ -26,11 +26,13 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
 #if UNITY_ANDROID
         if (Application.isEditor)
         {
-            Debug.LogWarning("[Bluetooth] Editor is not supported.");
+            Debug.LogWarning("[Bluetooth] Android plugin is not available in Editor.");
             return;
         }
         _bluetoothPlugin = new AndroidJavaClass("com.jcxyis.unitybluetooth.BluetoothManager");
         _bluetoothPluginInstance = _bluetoothPlugin.CallStatic<AndroidJavaObject>("getInstance");
+
+        CheckPermission();
 #endif
     }
     
@@ -145,6 +147,19 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         return stream != null && stream.IsOpen;
 #elif UNITY_ANDROID
         return _bluetoothPluginInstance.Call<bool>("IsConnected");
+#endif
+    }
+
+    /// <summary>
+    /// Get connected device, if no device is connected, return "|".
+    /// </summary>
+    /// <returns>{NAME}|{MAC}</returns>
+    public string GetConnectedDevice()
+    {
+#if UNITY_STANDALONE_WIN
+        throw new PlatformNotSupportedException("[Bluetooth] PC: Not supported.");
+#elif UNITY_ANDROID
+        return _bluetoothPluginInstance.Call<string>("GetConnectedDevice");
 #endif
     }
 

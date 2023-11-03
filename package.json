@@ -1,6 +1,6 @@
 {
     "name": "com.xrlab.labframe_bluetooth",
-    "version": "1.0.8",
+    "version": "1.0.0",
     "displayName": "Lab Frame 2023 - Bluetooth Plugin",
     "description": "Bluetooth Support for LabFrame2023.\nCurrently only tested on Android.",
     "unity": "2020.3",
