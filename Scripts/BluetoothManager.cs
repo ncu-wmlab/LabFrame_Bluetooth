@@ -45,6 +45,21 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
+    /// Check if bluetooth is available.
+    /// </summary>
+    public bool CheckAvailable()
+    {
+#if UNITY_ANDROID
+        // TODO check if bluetooth is available
+        return true;
+#elif UNITY_STANDALONE_WIN
+        return false;
+#else
+        return false;
+#endif
+    }
+
+    /// <summary>
     /// Init permission.
     /// It is recommended to call this method in the first scene (before connect).
     /// </summary>
@@ -136,6 +151,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         throw new PlatformNotSupportedException("[Bluetooth] PC: use ConnectCOM instead.");
 #elif UNITY_ANDROID
         return _bluetoothPluginInstance.Call<bool>("Connect", mac, pin);            
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -149,6 +166,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         // return stream != null && stream.IsOpen;
 #elif UNITY_ANDROID
         return _bluetoothPluginInstance.Call<bool>("IsConnected");
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -162,6 +181,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         throw new PlatformNotSupportedException("[Bluetooth] PC: Not supported.");
 #elif UNITY_ANDROID
         return _bluetoothPluginInstance.Call<string>("GetConnectedDevice");
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -181,6 +202,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         // return true;
 #elif UNITY_ANDROID            
         return _bluetoothPluginInstance.Call<bool>("Send", data);
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -195,6 +218,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         // return stream.BytesToRead;
 #elif UNITY_ANDROID
         return _bluetoothPluginInstance.Call<int>("Available");            
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -209,6 +234,8 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         // return stream.ReadLine();
 #elif UNITY_ANDROID            
         return _bluetoothPluginInstance.Call<string>("ReadLine");
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");
 #endif
     }
 
@@ -222,7 +249,9 @@ public class BluetoothManager : LabSingleton<BluetoothManager>, IManager
         // stream.Close();
         // stream = null;
 #elif UNITY_ANDROID
-        _bluetoothPluginInstance.Call("Stop");            
+        _bluetoothPluginInstance.Call("Stop");    
+#else
+        throw new PlatformNotSupportedException("[Bluetooth] This platform is not supported.");        
 #endif
     }
 
